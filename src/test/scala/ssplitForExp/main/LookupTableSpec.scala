@@ -14,8 +14,8 @@ class LookupTableSpec extends FlatSpec with Matchers {
     val key2id = lookup.getKey2Id
     val id2key = lookup.getId2Key
 
-    key2id("あ") should be (key2id(id2key(key2id("あ"))))
-    key2id("い") should not be (key2id(id2key(key2id("あ"))))
+    key2id("あ") should be (key2id(id2key(key2id("あ").toString)))
+    key2id("い") should not be (key2id(id2key(key2id("あ").toString)))
   }
 
 }

@@ -20,9 +20,10 @@ class Run(path:String) {
   def writeJson(outDir: String) : Unit = {
     val jsonCorpus = ("_article" -> corpus)
     val jsonTable = ("_lookup" ->
-      ("_key2id" -> lookup.getKey2Id) ~
+        ("_key2id" -> lookup.getKey2Id)~
         ("_id2key" -> lookup.getId2Key)
       )
+
 
     val corpusPath = outDir + "/jpnCoupus.json"
     val lookupPath = outDir + "/jpnLookup.json"
