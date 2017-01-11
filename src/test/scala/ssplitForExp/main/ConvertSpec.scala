@@ -5,18 +5,15 @@ package ssplitForExp.main
   */
 
 import org.scalatest.{FlatSpec, Matchers}
-import scala.xml._
+import scala.collection.mutable.ListBuffer
+
 class ConvertSpec extends FlatSpec with Matchers{
 
   def findPath(localPath:String) = getClass.getClassLoader.getResource(localPath).getPath
 
-  "convert" should "output corpus" in {
-
-    val sampleCorpusXML = XML.load(findPath("./OC01_00001.xml"))
-
-    println(sampleCorpusXML.text)
-
-    1 should be(1)
+  "apply" should "open XML file and return instance" in {
+    val corpus = Convert(findPath("./OC01_00001.xml"))
+    corpus.fullCorpus.length should be > 0
   }
 
 }
