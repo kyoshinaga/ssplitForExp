@@ -30,7 +30,7 @@ class Run(path:String) {
 
   def writeJson(outDir: String) : Unit = {
 
-    val corpusPath = outDir + "/jpnCoupus.json"
+    val corpusPath = outDir + "/jpnCorpus.json"
     val lookupPath = outDir + "/jpnLookup.json"
 
     val corpusf = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(corpusPath)))
