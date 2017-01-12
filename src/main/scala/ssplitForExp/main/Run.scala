@@ -4,7 +4,6 @@ package ssplitForExp.main
   * Created by kenta-yoshinaga on 2016/12/28.
   */
 
-import scala.xml._
 import java.io._
 
 import org.json4s._
