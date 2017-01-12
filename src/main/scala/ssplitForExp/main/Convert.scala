@@ -44,7 +44,7 @@ class Convert(path: String) {
     if (x._2 == "S")
       w(0) = 0
     x._1.map(x => x.toString) zip w
-  } ::: List(("\n", 0))
+  } ::: List(("\n", 2))
 
   val fullCorpus: List[(String, Int)] = {
     val lengthOfCorpus = corpus.length
