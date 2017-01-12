@@ -14,16 +14,16 @@ import org.json4s.jackson.JsonMethods._
 
 class Run(path:String) {
 
-  val corpus = Convert(path).fullCorpus
-  val lookup = LookupTable(corpus.map(x => x._1).toSet[String])
+  private val corpus = Convert(path).fullCorpus
+  private val lookup = LookupTable(corpus.map(x => x._1).toSet[String])
+
+  implicit val formats = DefaultFormats
+  val jsonCorpus:JValue = "_article" -> corpus
+  val jsonTable:JValue = "_lookup" ->
+    ("_key2id" -> Extraction.decompose(lookup.getKey2Id))~
+      ("_id2key" -> Extraction.decompose(lookup.getId2Key))
 
   def writeJson(outDir: String) : Unit = {
-    val jsonCorpus = ("_article" -> corpus)
-    val jsonTable = ("_lookup" ->
-        ("_key2id" -> lookup.getKey2Id)~
-        ("_id2key" -> lookup.getId2Key)
-      )
-
 
     val corpusPath = outDir + "/jpnCoupus.json"
     val lookupPath = outDir + "/jpnLookup.json"
@@ -34,8 +34,8 @@ class Run(path:String) {
     corpusf.write(compact(render(jsonCorpus)))
     lookupf.write(compact(render(jsonTable)))
 
-    corpusf.close
-    lookupf.close
+    corpusf.close()
+    lookupf.close()
   }
 
 }
