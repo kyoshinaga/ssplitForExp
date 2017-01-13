@@ -28,27 +28,37 @@ class Convert(path: String) {
   private val words = luws.map(x => x.text)
   private val borders = luws.map(x => XMLUtil.getAttributionMap(x).getOrElse("B","_"))
 
-  private val wordsAndBorders:List[(String, String)] = words zip borders toList
+  private val wordsAndBorders:List[(String, String)] = (words zip borders).toList
 
+  private val wordsAndTag:List[(String, String)] = wordsAndBorders.scanRight(("\n", "S", "O")) {(x, z) =>
+    z._2 match {
+      case "S" => (x._1, x._2,  "E")
+      case _ => (x._1, x._2,  "I")
+    }
+  }.map{x => (x._1, x._3)}
 
   /*
    * Tagging BIO class and concatenate key and tag.
    *
-   * BIO tag
-   *  B : Begin of Sentence.        Value is 0.
-   *  I : Continuation of Sentence. Value is 1.
-   *  O : Outside of sentence.      Value is 2.
+   * IOE tag
+   *  I : Begin or continuation of Sentence.  Value is 0.
+   *  O : Outside of sentence.                Value is 1.
+   *  E : End of Sentence.                    Value is 2.
    */
-  private val corpus: List[(String, Int)] = wordsAndBorders.flatMap{ x =>
-    val w = ListBuffer.fill(x._1.length)(1)
-    if (x._2 == "S")
-      w(0) = 0
+  private val corpus: List[(String, Int)] = wordsAndTag.flatMap{ x =>
+    val l = x._1.length
+    val w = ListBuffer.fill(l)(x._2 match {
+      case "O" => 1
+      case _ => 0
+    })
+    if (x._2 == "E")
+      w(l - 1) = 2
     x._1.map(x => x.toString) zip w
-  } ::: List(("\n", 2))
+  }
 
   val fullCorpus: List[(String, Int)] = {
     val lengthOfCorpus = corpus.length
-    val l = List.fill(10000 - lengthOfCorpus)("UNKNOWN" -> 2)
+    val l = List.fill(10000 - lengthOfCorpus)("UNKNOWN" -> 1)
     corpus ::: l
   }
 
