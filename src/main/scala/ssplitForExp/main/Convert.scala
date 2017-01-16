@@ -58,7 +58,7 @@ class Convert(path: String) {
 
   val fullCorpus: List[(String, Int)] = {
     val lengthOfCorpus = corpus.length
-    val l = List.fill(2000 - lengthOfCorpus)("UNKNOWN" -> 1)
+    val l = List.fill(10000 - lengthOfCorpus)("UNKNOWN" -> 1)
     corpus ::: l
   }
 
