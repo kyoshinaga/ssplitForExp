@@ -16,30 +16,36 @@ import scala.sys.process._
 class Run(path:String) {
 
   private val fileList:Array[String] = (Process("ls " + path) !!).split("\n")
-  private val corpusList = fileList.map{x => Convert(path + "/" + x).fullCorpus}
+  private val bioCorpusList = fileList.map{x => Convert(path + "/" + x).BIOFullCorpus}
+  private val ioeCorpusList = fileList.map{x => Convert(path + "/" + x).IOEFullCorpus}
 
-  private val wordSet = corpusList.flatMap{x => x.map{w => w._1}}.toSet[String]
+  private val wordSet = bioCorpusList.flatMap{x => x.map{w => w._1}}.toSet[String]
   private val lookup = LookupTable(wordSet)
 
   implicit val formats = DefaultFormats
 
-  val jsonCorpus:JValue = "_articles" -> Extraction.decompose(corpusList)
+  val jsonBIOCorpus:JValue = "_articles" -> Extraction.decompose(bioCorpusList)
+  val jsonIOECorpus:JValue = "_articles" -> Extraction.decompose(ioeCorpusList)
   val jsonTable:JValue = "_lookup" ->
     ("_key2id" -> Extraction.decompose(lookup.getKey2Id))~
       ("_id2key" -> Extraction.decompose(lookup.getId2Key))
 
   def writeJson(outDir: String) : Unit = {
 
-    val corpusPath = outDir + "/jpnCorpus.json"
+    val bioCorpusPath = outDir + "/jpnCorpusBIO.json"
+    val ioeCorpusPath = outDir + "/jpnCorpusIOE.json"
     val lookupPath = outDir + "/jpnLookup.json"
 
-    val corpusf = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(corpusPath)))
+    val bioCorpusf = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(bioCorpusPath)))
+    val ioeCorpusf = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(ioeCorpusPath)))
     val lookupf = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(lookupPath)))
 
-    corpusf.write(compact(render(jsonCorpus)))
+    bioCorpusf.write(compact(render(jsonBIOCorpus)))
+    ioeCorpusf.write(compact(render(jsonIOECorpus)))
     lookupf.write(compact(render(jsonTable)))
 
-    corpusf.close()
+    bioCorpusf.close()
+    ioeCorpusf.close()
     lookupf.close()
   }
 

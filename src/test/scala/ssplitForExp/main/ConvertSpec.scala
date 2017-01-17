@@ -13,7 +13,8 @@ class ConvertSpec extends FlatSpec with Matchers{
   "apply" should "open XML file and return instance" in {
     val corpus = Convert(findPath("./OC01_00001.xml"))
 
-    corpus.fullCorpus.length should be > 0
+    corpus.BIOFullCorpus.length should be > 0
+    corpus.IOEFullCorpus.length should be > 0
   }
 
 }

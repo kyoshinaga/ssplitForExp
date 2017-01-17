@@ -40,12 +40,33 @@ class Convert(path: String) {
   /*
    * Tagging BIO class and concatenate key and tag.
    *
+   * BIO tag
+   *  B : Begin of Sentence.                Value is 0.
+   *  I : Continuation or end of sentence.  Value is 1.
+   *  O : Outside of sentence.              Value is 2.
+   */
+  private val BIOcorpus: List[(String, Int)] = wordsAndBorders.flatMap{x =>
+    val w = ListBuffer.fill(x._1.length)(1)
+    if(x._2 == "S")
+      w(0) == 0
+    x._1.map(x => x.toString) zip w
+  } ::: List(("\n", 2))
+
+  val BIOFullCorpus: List[(String, Int)] = {
+    val lengthOfCorpus = BIOcorpus.length
+    val l = List.fill(10000 - lengthOfCorpus)("UNKNOWN" -> 2)
+    BIOcorpus ::: l
+  }
+
+  /*
+   * Tagging IOE class and concatenate key and tag.
+   *
    * IOE tag
    *  I : Begin or continuation of Sentence.  Value is 0.
    *  O : Outside of sentence.                Value is 1.
    *  E : End of Sentence.                    Value is 2.
    */
-  private val corpus: List[(String, Int)] = wordsAndTag.flatMap{ x =>
+  private val IOEcorpus: List[(String, Int)] = wordsAndTag.flatMap{ x =>
     val l = x._1.length
     val w = ListBuffer.fill(l)(x._2 match {
       case "O" => 1
@@ -56,12 +77,11 @@ class Convert(path: String) {
     x._1.map(x => x.toString) zip w
   }
 
-  val fullCorpus: List[(String, Int)] = {
-    val lengthOfCorpus = corpus.length
+  val IOEFullCorpus: List[(String, Int)] = {
+    val lengthOfCorpus = IOEcorpus.length
     val l = List.fill(10000 - lengthOfCorpus)("UNKNOWN" -> 1)
-    corpus ::: l
+    IOEcorpus ::: l
   }
-
 }
 
 object Convert {
