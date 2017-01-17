@@ -41,7 +41,7 @@ class Convert(path: String) {
   private val BIOcorpus: List[(String, Int)] = wordsAndBorders.flatMap{x =>
     val w = ListBuffer.fill(x._1.length)(1)
     if(x._2 == "S")
-      w(0) == 0
+      w(0) = 0
     x._1.map(x => x.toString) zip w
   } ::: List(("\n", 2))
 
