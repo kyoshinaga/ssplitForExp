@@ -38,7 +38,8 @@ class Convert(path: String) {
    *  I : Continuation or end of sentence.  Value is 1.
    *  O : Outside of sentence.              Value is 2.
    */
-  private val BIOcorpus: List[(String, Int)] = wordsAndBorders.flatMap{x =>
+  private val BIOcorpus: List[(String, Int)] = List(("\n",2)) :::
+    wordsAndBorders.flatMap{x =>
     val w = ListBuffer.fill(x._1.length)(1)
     if(x._2 == "S")
       w(0) = 0
@@ -65,7 +66,8 @@ class Convert(path: String) {
       case _ => (x._1, x._2,  "I")
     }
   }.map{x => (x._1, x._3)}
-  private val IOEcorpus: List[(String, Int)] = wordsAndTag.flatMap{ x =>
+  private val IOEcorpus: List[(String, Int)] = List(("\n",1)) :::
+    wordsAndTag.flatMap{ x =>
     val l = x._1.length
     val w = ListBuffer.fill(l)(x._2 match {
       case "O" => 1
