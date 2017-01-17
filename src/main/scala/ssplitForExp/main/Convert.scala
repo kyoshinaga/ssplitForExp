@@ -30,13 +30,6 @@ class Convert(path: String) {
 
   private val wordsAndBorders:List[(String, String)] = (words zip borders).toList
 
-  private val wordsAndTag:List[(String, String)] = wordsAndBorders.scanRight(("\n", "S", "O")) {(x, z) =>
-    z._2 match {
-      case "S" => (x._1, x._2,  "E")
-      case _ => (x._1, x._2,  "I")
-    }
-  }.map{x => (x._1, x._3)}
-
   /*
    * Tagging BIO class and concatenate key and tag.
    *
@@ -66,6 +59,12 @@ class Convert(path: String) {
    *  O : Outside of sentence.                Value is 1.
    *  E : End of Sentence.                    Value is 2.
    */
+  private val wordsAndTag:List[(String, String)] = wordsAndBorders.scanRight(("\n", "S", "O")) {(x, z) =>
+    z._2 match {
+      case "S" => (x._1, x._2,  "E")
+      case _ => (x._1, x._2,  "I")
+    }
+  }.map{x => (x._1, x._3)}
   private val IOEcorpus: List[(String, Int)] = wordsAndTag.flatMap{ x =>
     val l = x._1.length
     val w = ListBuffer.fill(l)(x._2 match {
