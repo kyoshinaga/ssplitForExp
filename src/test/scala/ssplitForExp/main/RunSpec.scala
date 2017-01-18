@@ -13,7 +13,8 @@ import org.json4s.jackson.JsonMethods._
 
 class RunSpec extends FlatSpec with Matchers{
 
-/*  def findPath(localPath:String) = getClass.getClassLoader.getResource(localPath).getPath
+  /*
+  def findPath(localPath:String) = getClass.getClassLoader.getResource(localPath).getPath
 
   "jsonCorpus" should "have dictionary objects" in {
 
@@ -22,6 +23,7 @@ class RunSpec extends FlatSpec with Matchers{
     println(pretty(render(r.jsonTable)))
 
     1 should be (1)
-  }*/
+  }
+  */
 
 }

@@ -32,8 +32,8 @@ class Run(path:String) {
 
   def writeJson(outDir: String) : Unit = {
 
-    val bioCorpusPath = outDir + "/jpnCorpusBIO.json"
-    val ioeCorpusPath = outDir + "/jpnCorpusIOE.json"
+    val bioCorpusPath = outDir + "/jpnCorpusBunsetsuBIO.json"
+    val ioeCorpusPath = outDir + "/jpnCorpusBunsetsuIOE.json"
     val lookupPath = outDir + "/jpnLookup.json"
 
     val bioCorpusf = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(bioCorpusPath)))
