@@ -45,7 +45,7 @@ class Convert(path: String) {
 
   def genFullCorpus(data: List[(String, Int)]): List[(String, Int)] = {
     val lengthOfCorpus = data.length
-    val l = List.fill(1000 - lengthOfCorpus)("　" -> 2)
+    val l = List.fill(4000 - lengthOfCorpus)("　" -> 2)
     data ::: l
   }
 
