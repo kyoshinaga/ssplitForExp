@@ -39,13 +39,13 @@ class Convert(path: String) {
     if(x._2 == "S")
       w(0) = 0
     x._1.map{x => x.toString} zip w
-  } ::: List(("\n", 2))
+  } ::: List(("\n", 2),(" ", 2))
 
   val corpus:List[List[(String, Int)]] = wordsAndBorders.map{x => genBIOCorpus(x)}
 
   def genFullCorpus(data: List[(String, Int)]): List[(String, Int)] = {
     val lengthOfCorpus = data.length
-    val l = List.fill(4000 - lengthOfCorpus)("　" -> 2)
+    val l = List.fill(4000 - lengthOfCorpus)("UNKNOWN" -> 1)
     data ::: l
   }
 
