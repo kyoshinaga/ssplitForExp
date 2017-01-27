@@ -7,8 +7,8 @@ import scala.collection.mutable
 
 class LookupTable(s: Set[String]) {
 
-  private val key2id:mutable.Map[String, Int] = mutable.Map[String, Int]("UNKNOWN" -> 0,"\n" -> 1, " " -> 2)
-  private val id2key:mutable.Map[String, String] = mutable.Map[String, String]("0" -> "UNKNOWN", "1" -> "\n", "2" -> " ")
+  private val key2id:mutable.Map[String, Int] = mutable.Map[String, Int]("UNKNOWN" -> 0,"\n" -> 1, "　" -> 2)
+  private val id2key:mutable.Map[String, String] = mutable.Map[String, String]("0" -> "UNKNOWN", "1" -> "\n", "2" -> "　")
 
   private def maxId(): Int = key2id.values.max
 

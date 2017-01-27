@@ -14,41 +14,33 @@ import org.json4s.jackson.JsonMethods._
 import scala.sys.process._
 
 class Run(path:String) {
-
   private val fileList:Array[String] = (Process("ls " + path) !!).split("\n")
-  private val bioCorpusList = fileList.map{x => Convert(path + "/" + x).BIOFullCorpus}
-  private val ioeCorpusList = fileList.map{x => Convert(path + "/" + x).IOEFullCorpus}
+  private val corpusList = fileList.map{x => Convert(path + "/" + x).fullCorpus}
 
-  private val wordSet = bioCorpusList.flatMap{x => x.map{w => w._1}}.toSet[String]
+  private val wordSet = corpusList.flatMap{f => f.flatMap{s => s.map{w => w._1}}}.toSet[String]
   private val lookup = LookupTable(wordSet)
 
   implicit val formats = DefaultFormats
 
-  val jsonBIOCorpus:JValue = "_articles" -> Extraction.decompose(bioCorpusList)
-  val jsonIOECorpus:JValue = "_articles" -> Extraction.decompose(ioeCorpusList)
+  val jsonCorpus:JValue = "_articles" -> Extraction.decompose(corpusList)
   val jsonTable:JValue = "_lookup" ->
     ("_key2id" -> Extraction.decompose(lookup.getKey2Id))~
       ("_id2key" -> Extraction.decompose(lookup.getId2Key))
 
   def writeJson(outDir: String) : Unit = {
 
-    val bioCorpusPath = outDir + "/jpnCorpusBIO.json"
-    val ioeCorpusPath = outDir + "/jpnCorpusIOE.json"
+    val corpusPath = outDir + "/jpnCorpus.json"
     val lookupPath = outDir + "/jpnLookup.json"
 
-    val bioCorpusf = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(bioCorpusPath)))
-    val ioeCorpusf = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(ioeCorpusPath)))
+    val bioCorpusf = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(corpusPath)))
     val lookupf = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(lookupPath)))
 
-    bioCorpusf.write(compact(render(jsonBIOCorpus)))
-    ioeCorpusf.write(compact(render(jsonIOECorpus)))
+    bioCorpusf.write(compact(render(jsonCorpus)))
     lookupf.write(compact(render(jsonTable)))
 
     bioCorpusf.close()
-    ioeCorpusf.close()
     lookupf.close()
   }
-
 }
 
 object Run {

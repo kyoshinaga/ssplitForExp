@@ -13,15 +13,11 @@ import org.json4s.jackson.JsonMethods._
 
 class RunSpec extends FlatSpec with Matchers{
 
-/*  def findPath(localPath:String) = getClass.getClassLoader.getResource(localPath).getPath
+  def findPath(localPath:String) = getClass.getClassLoader.getResource(localPath).getPath
 
   "jsonCorpus" should "have dictionary objects" in {
 
-    val r = new Run(findPath("./OC01_00001.xml"))
-
-    println(pretty(render(r.jsonTable)))
-
     1 should be (1)
-  }*/
+  }
 
 }
