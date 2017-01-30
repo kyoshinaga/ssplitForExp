@@ -33,13 +33,13 @@ class Convert(path: String) {
    *  O : Outside of sentence.              Value is 2.
    */
 
-  def genBIOCorpus(data: List[(String, String)]): List[(String, Int)] = List(("\n", 2)) :::
+  def genBIOCorpus(data: List[(String, String)]): List[(String, Int)] =
   data.flatMap{x =>
     val w = ListBuffer.fill(x._1.length)(1)
     if(x._2 == "S")
       w(0) = 0
     x._1.map{x => x.toString} zip w
-  } ::: List(("\n", 2),(" ", 2))
+  }
 
   val corpus:List[List[(String, Int)]] = wordsAndBorders.map{x => genBIOCorpus(x)}
 
