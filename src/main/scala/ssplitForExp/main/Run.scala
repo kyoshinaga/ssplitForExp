@@ -5,6 +5,7 @@ package ssplitForExp.main
   */
 
 import java.io._
+import javax.management.RuntimeErrorException
 
 import org.json4s._
 import org.json4s.DefaultFormats
@@ -42,14 +43,18 @@ class Run(path:String) {
     bioCorpusf.close()
     lookupf.close()
   }
-
 }
 
 object Run {
   def main(args:Array[String]): Unit = {
-    val fileDir = args(0)
-    val outDir = args(1)
-    val r = new Run(fileDir)
-    r.writeJson(outDir)
+    try {
+      val fileDir = args(0)
+      val outDir = args(1)
+      val r = new Run(fileDir)
+      r.writeJson(outDir)
+    }
+    catch {
+      println("USAGE: ssplitForExp.main.Run INPUTDIR OUTPUTDIR")
+    }
   }
 }
