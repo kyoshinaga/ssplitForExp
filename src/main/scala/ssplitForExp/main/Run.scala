@@ -45,9 +45,14 @@ class Run(path:String) {
 
 object Run {
   def main(args:Array[String]): Unit = {
-    val fileDir = args(0)
-    val outDir = args(1)
-    val r = new Run(fileDir)
-    r.writeJson(outDir)
+    try {
+      val fileDir = args(0)
+      val outDir = args(1)
+      val r = new Run(fileDir)
+      r.writeJson(outDir)
+    }
+    catch {
+      println("USAGE: ssplitForExp.main.Run INPUTDIR OUTPUTDIR")
+    }
   }
 }
