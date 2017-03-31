@@ -52,7 +52,8 @@ object Run {
       r.writeJson(outDir)
     }
     catch {
-      println("USAGE: ssplitForExp.main.Run INPUTDIR OUTPUTDIR")
+      case e:Exception =>
+        println("USAGE: ssplitForExp.main.Run INPUTDIR OUTPUTDIR")
     }
   }
 }
